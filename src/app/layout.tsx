@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SITE_CONFIG } from "@/lib/content";
+import { ModalProvider } from "@/context/ModalContext";
+import { ConsultoriaModal } from "@/components/consultoria/ConsultoriaModal";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -48,7 +50,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${cormorant.variable} ${jakarta.variable}`}>
-      <body className="font-body antialiased">{children}</body>
+      <body className="font-body antialiased">
+        <ModalProvider>
+          {children}
+          <ConsultoriaModal />
+        </ModalProvider>
+      </body>
     </html>
   );
 }

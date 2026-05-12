@@ -1,5 +1,7 @@
+"use client";
+
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { Button } from "@/components/ui/Button";
+import { ModalTriggerButton } from "@/components/ui/ModalTriggerButton";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { TRAINING } from "@/lib/content";
 
@@ -45,11 +47,7 @@ export function TrainingSection() {
                 ))}
               </ul>
 
-              <Button
-                label={TRAINING.cta.label}
-                href={TRAINING.cta.href}
-                size="lg"
-              />
+              <ModalTriggerButton label={TRAINING.cta.label} size="lg" />
             </div>
 
             {/* Image */}

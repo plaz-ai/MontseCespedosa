@@ -3,9 +3,10 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { Button } from "@/components/ui/Button";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { HERO, SITE_CONFIG } from "@/lib/content";
+import { ModalTriggerButton } from "@/components/ui/ModalTriggerButton";
+import { Button } from "@/components/ui/Button";
+import { HERO } from "@/lib/content";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -75,15 +76,14 @@ export function HeroSection() {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-3 mb-10">
-              <Button
+              <ModalTriggerButton
                 label={HERO.cta.primary.label}
-                href={HERO.cta.primary.href}
                 size="lg"
                 className="hero-cta"
               />
               <Button
                 label={HERO.cta.secondary.label}
-                href={HERO.cta.secondary.href}
+                href="#contacto"
                 size="lg"
                 variant="outline"
                 className="hero-cta border-white/30 text-white hover:bg-white hover:text-mc-text"
@@ -141,9 +141,8 @@ export function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30">
-        <span className="text-xs font-body tracking-widest uppercase">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 pointer-events-none">
+        <div className="w-px h-10 bg-gradient-to-b from-transparent via-white/20 to-transparent animate-bounce-slow" />
       </div>
     </section>
   );

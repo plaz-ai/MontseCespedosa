@@ -58,7 +58,7 @@ export function ServicesSection() {
               className={`service-card group relative rounded-2xl p-6 lg:p-8 border transition-all duration-300 hover:-translate-y-1 ${
                 service.highlight
                   ? "bg-mc-orange border-mc-orange text-white"
-                  : "bg-mc-dark-card border-white/10 hover:border-mc-orange/40"
+                  : "bg-[#1E1C2A] border-white/15 hover:border-mc-orange/50 hover:bg-[#221F30]"
               }`}
             >
               {service.highlight && (
@@ -101,7 +101,7 @@ export function ServicesSection() {
 
               <p
                 className={`font-body text-sm leading-relaxed mb-6 ${
-                  service.highlight ? "text-white/85" : "text-white/50"
+                  service.highlight ? "text-white/90" : "text-white/75"
                 }`}
               >
                 {service.description}

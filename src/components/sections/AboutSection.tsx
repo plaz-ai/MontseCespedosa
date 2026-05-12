@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { Button } from "@/components/ui/Button";
+import { ModalTriggerButton } from "@/components/ui/ModalTriggerButton";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -97,11 +97,7 @@ export function AboutSection() {
               ))}
             </div>
 
-            <Button
-              label="Agenda una consultoría"
-              href="#consultoria"
-              size="lg"
-            />
+            <ModalTriggerButton size="lg" />
           </div>
         </div>
       </div>

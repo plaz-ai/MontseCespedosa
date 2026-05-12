@@ -1,34 +1,84 @@
-import { MEDIA_OUTLETS } from "@/lib/content";
+const MEDIA_LOGOS = [
+  {
+    name: "El País",
+    style: "font-display font-bold text-[#1A1A1A] text-lg tracking-tighter",
+  },
+  {
+    name: "Cadena SER",
+    style: "font-body font-black text-[#0073CF] text-xs tracking-widest uppercase",
+  },
+  {
+    name: "Telecinco",
+    style: "font-display font-bold text-[#003087] text-lg italic",
+  },
+  {
+    name: "Antena 3",
+    style: "font-body font-black text-[#E63312] text-sm tracking-tight",
+  },
+  {
+    name: "La Sexta",
+    style: "font-display font-bold text-[#1DB954] text-lg",
+  },
+  {
+    name: "Expansión",
+    style: "font-display font-bold text-[#0B2447] text-base tracking-tight",
+  },
+  {
+    name: "El Mundo",
+    style: "font-display font-bold text-[#1A3A6B] text-lg tracking-tighter",
+  },
+  {
+    name: "ABC",
+    style: "font-display font-bold text-[#C8102E] text-2xl tracking-tight",
+  },
+  {
+    name: "20 Minutos",
+    style: "font-body font-black text-[#FF6B00] text-xs tracking-widest uppercase",
+  },
+  {
+    name: "COPE",
+    style: "font-body font-black text-[#003087] text-base tracking-[0.2em]",
+  },
+  {
+    name: "Onda Cero",
+    style: "font-body font-bold text-[#0047AB] text-xs tracking-widest uppercase",
+  },
+  {
+    name: "idealista",
+    style: "font-body font-black text-[#D4621B] text-sm tracking-tight",
+  },
+];
+
+// Duplicate for seamless infinite ticker
+const ALL_LOGOS = [...MEDIA_LOGOS, ...MEDIA_LOGOS];
 
 export function MediaBar() {
-  // Duplicate for seamless ticker
-  const allOutlets = [...MEDIA_OUTLETS, ...MEDIA_OUTLETS];
-
   return (
-    <section className="bg-mc-cream border-y border-mc-gray-200 py-5 overflow-hidden">
-      <div className="flex items-center gap-4 mb-3 container-wide">
+    <section className="bg-white border-y border-mc-gray-200 py-6 overflow-hidden">
+      <div className="container-wide flex items-center gap-4 mb-5">
         <span className="text-[10px] font-body font-semibold text-mc-gray-400 tracking-widest uppercase whitespace-nowrap">
-          Apariciones en medios
+          Montse en los medios
         </span>
         <div className="flex-1 h-px bg-mc-gray-200" />
       </div>
 
       <div className="relative">
         {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-mc-cream to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-mc-cream to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
         {/* Ticker */}
-        <div className="flex items-center animate-ticker whitespace-nowrap">
-          {allOutlets.map((outlet, idx) => (
+        <div className="flex items-center animate-ticker whitespace-nowrap gap-0">
+          {ALL_LOGOS.map((logo, idx) => (
             <div
-              key={`${outlet}-${idx}`}
-              className="inline-flex items-center mx-8"
+              key={`${logo.name}-${idx}`}
+              className="inline-flex items-center mx-6 flex-shrink-0"
             >
-              <span className="font-display text-xl font-semibold text-mc-gray-400 hover:text-mc-text transition-colors cursor-default">
-                {outlet}
-              </span>
-              <span className="ml-8 text-mc-orange text-sm">·</span>
+              {/* Logo chip */}
+              <div className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-mc-gray-100 border border-mc-gray-200 hover:border-mc-orange/30 hover:bg-mc-orange/5 transition-all duration-200 cursor-default min-w-[110px]">
+                <span className={logo.style}>{logo.name}</span>
+              </div>
+              <span className="ml-6 text-mc-gray-200 text-sm">|</span>
             </div>
           ))}
         </div>

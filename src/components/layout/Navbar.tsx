@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/content";
-import { Button } from "@/components/ui/Button";
+import { ModalTriggerButton } from "@/components/ui/ModalTriggerButton";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -64,7 +64,7 @@ export function Navbar() {
           >
             {SITE_CONFIG.phone}
           </a>
-          <Button label="Agenda ahora" href="#consultoria" size="sm" />
+          <ModalTriggerButton label="Agenda ahora" size="sm" />
         </div>
 
         {/* Mobile burger */}
@@ -104,9 +104,8 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Button
+          <ModalTriggerButton
             label="Agenda una consultoría"
-            href="#consultoria"
             className="mt-2 w-full justify-center"
           />
         </nav>
