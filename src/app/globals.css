@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --mc-orange: #d4621b;
+  --mc-orange-light: #e87840;
+  --mc-orange-dark: #b8501a;
+  --mc-dark: #0e0d14;
+  --mc-dark-card: #16151f;
+  --mc-cream: #faf7f2;
+  --mc-gray-100: #f2f0eb;
+  --mc-gray-200: #e4e1da;
+  --mc-gray-400: #9b9794;
+  --mc-text: #1a1826;
+  --mc-text-muted: #6b6867;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  color: var(--mc-text);
+  background-color: var(--mc-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--mc-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--mc-orange);
+  border-radius: 3px;
+}
+
+/* Selection */
+::selection {
+  background: var(--mc-orange);
+  color: white;
+}
+
+/* Utility classes */
+.text-balance {
+  text-wrap: balance;
+}
+
+.section-padding {
+  @apply py-20 md:py-28 lg:py-32;
+}
+
+.container-wide {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Image placeholder style */
+.img-placeholder {
+  @apply relative overflow-hidden bg-mc-gray-100 flex items-center justify-center;
+}
+
+.img-placeholder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(212, 98, 27, 0.04) 100%
+  );
+}
