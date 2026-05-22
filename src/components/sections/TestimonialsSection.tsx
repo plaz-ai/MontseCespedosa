@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { TESTIMONIALS } from "@/lib/content";
@@ -21,7 +21,9 @@ function StarRating({ count }: { count: number }) {
 
 export function TestimonialsSection() {
   const containerRef = useRef<HTMLElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const isAnimating = useRef(false);
 
   useGSAP(() => {
     gsap.from(".testimonials-header", {
@@ -32,7 +34,8 @@ export function TestimonialsSection() {
       scrollTrigger: { trigger: ".testimonials-header", start: "top 85%" },
     });
 
-    gsap.set(".testimonial-card", { opacity: 0, y: 40, clipPath: "inset(0 0 30% 0)" });
+    // Desktop cards — stagger clip from bottom
+    gsap.set(".testimonial-card", { opacity: 0, y: 30, clipPath: "inset(0 0 20% 0)" });
     ScrollTrigger.batch(".testimonial-card", {
       onEnter: (elements) => {
         gsap.to(elements, {
@@ -49,60 +52,102 @@ export function TestimonialsSection() {
     });
   }, { scope: containerRef });
 
-  const prev = () => setActiveIndex((i) => (i === 0 ? TESTIMONIALS.length - 1 : i - 1));
-  const next = () => setActiveIndex((i) => (i === TESTIMONIALS.length - 1 ? 0 : i + 1));
+  // GSAP crossfade on carousel navigation
+  const goToIndex = useCallback((newIndex: number) => {
+    if (isAnimating.current || newIndex === activeIndex) return;
+    isAnimating.current = true;
+
+    const el = carouselRef.current;
+    if (!el) {
+      setActiveIndex(newIndex);
+      isAnimating.current = false;
+      return;
+    }
+
+    gsap.to(el, {
+      opacity: 0,
+      y: -12,
+      duration: 0.22,
+      ease: "power2.in",
+      onComplete: () => {
+        setActiveIndex(newIndex);
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 14 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.32,
+            ease: "power3.out",
+            onComplete: () => { isAnimating.current = false; },
+          }
+        );
+      },
+    });
+  }, [activeIndex]);
+
+  const prev = () => goToIndex(activeIndex === 0 ? TESTIMONIALS.length - 1 : activeIndex - 1);
+  const next = () => goToIndex(activeIndex === TESTIMONIALS.length - 1 ? 0 : activeIndex + 1);
   const active = TESTIMONIALS[activeIndex];
 
   return (
-    <section ref={containerRef} className="section-padding bg-mc-dark" id="testimonios">
+    <section ref={containerRef} className="section-padding bg-mc-cream" id="testimonios">
       <div className="container-wide">
 
-        {/* Editorial section header */}
-        <div className="testimonials-header flex items-end justify-between mb-12 pb-6 border-b border-white/[0.08]">
+        {/* Editorial header */}
+        <div className="testimonials-header flex flex-col sm:flex-row sm:items-end justify-between mb-12 pb-6 border-b border-mc-gray-200 gap-4">
           <div className="flex items-center gap-4">
             <span className="text-[10px] font-body tracking-[0.25em] uppercase text-mc-orange font-semibold">
               04 ——
             </span>
-            <span className="text-[10px] font-body tracking-[0.25em] uppercase text-white/30">
+            <span className="text-[10px] font-body tracking-[0.25em] uppercase text-mc-text-muted">
               Testimonios
             </span>
           </div>
-          <h2 className="font-display text-3xl md:text-4xl text-white text-right leading-tight">
+          <h2 className="font-display text-3xl md:text-4xl text-mc-text text-right leading-tight">
             Lo que dicen <em className="not-italic text-mc-orange">nuestros clientes</em>
           </h2>
         </div>
 
-        {/* Desktop: masonry-style grid */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06] border border-white/[0.06] overflow-hidden">
+        {/* Desktop: grid with 1px borders */}
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-px bg-mc-gray-200 border border-mc-gray-200 overflow-hidden">
           {TESTIMONIALS.map((t, idx) => (
             <article
               key={t.id}
-              className={`testimonial-card p-7 lg:p-8 transition-colors duration-300 ${
+              className={`testimonial-card p-7 lg:p-8 transition-colors duration-300 flex flex-col ${
                 idx === 0
-                  ? "bg-mc-orange"
-                  : "bg-mc-dark hover:bg-mc-dark-card"
+                  ? "bg-mc-dark"
+                  : "bg-white hover:bg-mc-cream"
               }`}
             >
               <StarRating count={t.rating} />
 
-              {/* Big quote mark */}
-              <div className={`font-display text-6xl leading-none mt-4 mb-2 ${idx === 0 ? "text-white/30" : "text-mc-orange/20"}`}>
+              {/* Decorative quote mark */}
+              <div className={`font-display text-6xl leading-none mt-4 mb-1 select-none ${
+                idx === 0 ? "text-mc-orange/25" : "text-mc-orange/15"
+              }`}>
                 &ldquo;
               </div>
 
-              <blockquote className={`font-body text-sm leading-relaxed mb-6 -mt-4 ${idx === 0 ? "text-white/90" : "text-white/60"}`}>
+              <blockquote className={`font-body text-sm leading-relaxed mb-6 -mt-3 flex-1 ${
+                idx === 0 ? "text-white/80" : "text-mc-text-muted"
+              }`}>
                 {t.text}
               </blockquote>
 
-              <footer className="flex items-center gap-3 border-t pt-4 mt-auto" style={{ borderColor: idx === 0 ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.07)" }}>
-                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-display font-bold shrink-0 ${idx === 0 ? "bg-white/20 text-white" : "bg-mc-orange text-white"}`}>
+              <footer className={`flex items-center gap-3 border-t pt-4 ${
+                idx === 0 ? "border-white/10" : "border-mc-gray-200"
+              }`}>
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-display font-bold shrink-0 ${
+                  idx === 0 ? "bg-mc-orange text-white" : "bg-mc-text text-white"
+                }`}>
                   {t.name[0]}
                 </div>
                 <div>
-                  <div className={`text-sm font-body font-semibold ${idx === 0 ? "text-white" : "text-white/80"}`}>
+                  <div className={`text-sm font-body font-semibold ${idx === 0 ? "text-white" : "text-mc-text"}`}>
                     {t.name}
                   </div>
-                  <div className={`text-xs font-body ${idx === 0 ? "text-white/50" : "text-white/30"}`}>
+                  <div className={`text-xs font-body ${idx === 0 ? "text-white/40" : "text-mc-gray-400"}`}>
                     {t.location}
                   </div>
                 </div>
@@ -111,41 +156,53 @@ export function TestimonialsSection() {
           ))}
         </div>
 
-        {/* Mobile: carousel */}
-        <div className="md:hidden border border-white/[0.08]">
-          <article className="bg-mc-dark-card p-7">
+        {/* Mobile: GSAP crossfade carousel */}
+        <div className="md:hidden border border-mc-gray-200">
+          <div ref={carouselRef} className="bg-white p-7">
             <StarRating count={active.rating} />
-            <div className="font-display text-6xl leading-none mt-4 mb-2 text-mc-orange/20">&ldquo;</div>
-            <blockquote className="font-body text-base leading-relaxed mb-6 -mt-4 text-white/70">
+            <div className="font-display text-6xl leading-none mt-4 mb-1 text-mc-orange/15 select-none">&ldquo;</div>
+            <blockquote className="font-body text-base leading-relaxed mb-6 -mt-3 text-mc-text-muted">
               {active.text}
             </blockquote>
-            <footer className="flex items-center gap-3 border-t border-white/[0.08] pt-4">
-              <div className="w-10 h-10 rounded-full bg-mc-orange flex items-center justify-center text-white font-display font-bold">
+            <footer className="flex items-center gap-3 border-t border-mc-gray-200 pt-4">
+              <div className="w-10 h-10 rounded-full bg-mc-text flex items-center justify-center text-white font-display font-bold">
                 {active.name[0]}
               </div>
               <div>
-                <div className="text-white font-body font-semibold">{active.name}</div>
-                <div className="text-white/40 text-sm font-body">{active.location}</div>
+                <div className="text-mc-text font-body font-semibold">{active.name}</div>
+                <div className="text-mc-text-muted text-sm font-body">{active.location}</div>
               </div>
             </footer>
-          </article>
+          </div>
 
-          <div className="flex items-center justify-between px-7 py-4 border-t border-white/[0.08]">
-            <button onClick={prev} className="w-9 h-9 border border-white/10 flex items-center justify-center text-white/40 hover:border-mc-orange hover:text-mc-orange transition-all text-lg">
+          {/* Controls */}
+          <div className="flex items-center justify-between px-7 py-4 border-t border-mc-gray-200 bg-mc-cream">
+            <button
+              onClick={prev}
+              className="w-9 h-9 border border-mc-gray-200 flex items-center justify-center text-mc-text-muted hover:border-mc-orange hover:text-mc-orange transition-all text-lg"
+            >
               ‹
             </button>
-            <div className="flex gap-1.5">
+            <div className="flex gap-2 items-center">
               {TESTIMONIALS.map((_, i) => (
-                <button key={i} onClick={() => setActiveIndex(i)}
-                  className={`h-px transition-all duration-300 ${i === activeIndex ? "w-8 bg-mc-orange" : "w-3 bg-white/20"}`}
+                <button
+                  key={i}
+                  onClick={() => goToIndex(i)}
+                  className={`h-px transition-all duration-300 ${
+                    i === activeIndex ? "w-8 bg-mc-orange" : "w-3 bg-mc-gray-200 hover:bg-mc-gray-400"
+                  }`}
                 />
               ))}
             </div>
-            <button onClick={next} className="w-9 h-9 border border-white/10 flex items-center justify-center text-white/40 hover:border-mc-orange hover:text-mc-orange transition-all text-lg">
+            <button
+              onClick={next}
+              className="w-9 h-9 border border-mc-gray-200 flex items-center justify-center text-mc-text-muted hover:border-mc-orange hover:text-mc-orange transition-all text-lg"
+            >
               ›
             </button>
           </div>
         </div>
+
       </div>
     </section>
   );

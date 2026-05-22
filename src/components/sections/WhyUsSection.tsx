@@ -38,7 +38,6 @@ export function WhyUsSection() {
   const containerRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
-    // Section header reveal
     gsap.from(".why-section-header", {
       opacity: 0,
       y: 30,
@@ -47,8 +46,8 @@ export function WhyUsSection() {
       scrollTrigger: { trigger: ".why-section-header", start: "top 85%" },
     });
 
-    // Each row slides in from the left, staggered
-    gsap.set(".why-item", { opacity: 0, x: -30 });
+    // Rows slide in from left with stagger
+    gsap.set(".why-item", { opacity: 0, x: -32 });
     ScrollTrigger.batch(".why-item", {
       onEnter: (elements) => {
         gsap.to(elements, {
@@ -63,63 +62,74 @@ export function WhyUsSection() {
       once: true,
     });
 
+    // Icon hover float per item
+    gsap.utils.toArray<HTMLElement>(".why-item").forEach((item) => {
+      const icon = item.querySelector(".why-icon");
+      if (!icon) return;
+      item.addEventListener("mouseenter", () => {
+        gsap.to(icon, { y: -4, rotate: 5, duration: 0.25, ease: "power2.out" });
+      });
+      item.addEventListener("mouseleave", () => {
+        gsap.to(icon, { y: 0, rotate: 0, duration: 0.5, ease: "elastic.out(1, 0.4)" });
+      });
+    });
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="section-padding bg-mc-cream" id="por-que-nosotros">
+    <section ref={containerRef} className="section-padding bg-mc-dark" id="por-que-nosotros">
       <div className="container-wide">
 
-        {/* Editorial section header */}
-        <div className="why-section-header flex items-end justify-between mb-10 pb-6 border-b border-mc-gray-200">
+        {/* Editorial header */}
+        <div className="why-section-header flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-6 border-b border-white/[0.08] gap-4">
           <div className="flex items-center gap-4">
             <span className="text-[10px] font-body tracking-[0.25em] uppercase text-mc-orange font-semibold">
               01 ——
             </span>
-            <span className="text-[10px] font-body tracking-[0.25em] uppercase text-mc-text-muted">
+            <span className="text-[10px] font-body tracking-[0.25em] uppercase text-white/30">
               ¿Por qué elegirnos?
             </span>
           </div>
-          <h2 className="font-display text-3xl md:text-4xl text-mc-text text-right leading-tight">
+          <h2 className="font-display text-3xl md:text-4xl text-white text-right leading-tight">
             Exbanqueros de <em className="not-italic text-mc-orange">tu lado</em>
           </h2>
         </div>
 
-        {/* Editorial numbered list */}
+        {/* Numbered list */}
         <div className="why-list">
           {WHY_US_ITEMS.map((item, i) => (
             <div
               key={item.id}
-              className="why-item group border-b border-mc-gray-200 last:border-b-0"
+              className="why-item group border-b border-white/[0.07] last:border-b-0 cursor-default"
             >
               <div className="grid grid-cols-[48px_1fr] lg:grid-cols-[48px_280px_1fr] gap-x-6 lg:gap-x-10 py-7 items-start">
                 {/* Number */}
-                <span className="font-body text-mc-orange/40 text-sm font-medium pt-1 group-hover:text-mc-orange transition-colors duration-300">
+                <span className="font-body text-mc-orange/30 text-sm font-medium pt-1 group-hover:text-mc-orange transition-colors duration-300 tabular-nums">
                   0{i + 1}
                 </span>
 
-                {/* Title */}
-                <div className="flex items-start gap-3 lg:border-r lg:border-mc-gray-200 lg:pr-10">
-                  <span className="text-mc-orange/50 mt-0.5 flex-shrink-0 group-hover:text-mc-orange transition-colors duration-300">
+                {/* Title + icon */}
+                <div className="flex items-start gap-3 lg:border-r lg:border-white/[0.07] lg:pr-10">
+                  <span className="why-icon text-mc-orange/40 mt-0.5 flex-shrink-0 group-hover:text-mc-orange transition-colors duration-300">
                     {ICONS[item.icon]}
                   </span>
-                  <h3 className="font-display text-xl lg:text-2xl text-mc-text group-hover:text-mc-orange transition-colors duration-300 leading-tight">
+                  <h3 className="font-display text-xl lg:text-2xl text-white/80 group-hover:text-white transition-colors duration-300 leading-tight">
                     {item.title}
                   </h3>
                 </div>
 
-                {/* Description */}
-                <p className="hidden lg:block font-body text-sm text-mc-text-muted leading-relaxed pt-0.5 col-span-1">
+                {/* Description — desktop */}
+                <p className="hidden lg:block font-body text-sm text-white/35 leading-relaxed pt-0.5 group-hover:text-white/55 transition-colors duration-300">
                   {item.description}
                 </p>
 
-                {/* Mobile description */}
-                <p className="lg:hidden col-span-2 col-start-2 font-body text-sm text-mc-text-muted leading-relaxed mt-2">
+                {/* Description — mobile */}
+                <p className="lg:hidden col-span-2 col-start-2 font-body text-sm text-white/40 leading-relaxed mt-2">
                   {item.description}
                 </p>
               </div>
 
-              {/* Horizontal line that draws on hover */}
-              <div className="why-divider-line h-px bg-mc-orange/20 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500" />
+              {/* Bottom reveal line on hover (CSS transition) */}
+              <div className="h-px bg-mc-orange/25 scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500" />
             </div>
           ))}
         </div>
