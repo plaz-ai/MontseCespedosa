@@ -47,19 +47,35 @@ export function StatsSection() {
   );
 
   return (
-    <section ref={containerRef} className="bg-mc-orange">
-      <div className="container-wide stats-inner py-16 lg:py-20">
+    <section ref={containerRef} className="bg-mc-orange relative overflow-hidden">
+      {/* Diagonal texture pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.07] pointer-events-none"
+        style={{
+          backgroundImage: `repeating-linear-gradient(
+            -45deg,
+            white 0px,
+            white 1px,
+            transparent 1px,
+            transparent 24px
+          )`,
+        }}
+      />
+      {/* Soft vignette */}
+      <div className="absolute inset-0 bg-gradient-to-r from-mc-orange-dark/40 via-transparent to-mc-orange-dark/40 pointer-events-none" />
+
+      <div className="container-wide stats-inner py-16 lg:py-20 relative z-10">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
           {STATS.map((stat) => (
-            <div key={stat.label} className="text-center">
+            <div key={stat.label} className="text-center group">
               <div className="flex items-baseline justify-center gap-0.5 mb-1">
                 <span
-                  className="stat-value font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white"
+                  className="stat-value font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white tabular-nums"
                   data-target={stat.value}
                 >
                   0
                 </span>
-                <span className="font-display text-2xl md:text-3xl font-bold text-white/80">
+                <span className="font-display text-2xl md:text-3xl font-bold text-white/70">
                   {stat.suffix}
                 </span>
               </div>

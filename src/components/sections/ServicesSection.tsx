@@ -22,18 +22,34 @@ export function ServicesSection() {
         scrollTrigger: { trigger: ".services-header", start: "top 85%" },
       });
 
+      // Clip-path wipe reveal on cards
+      gsap.set(".service-card", { opacity: 0, clipPath: "inset(0 100% 0 0 round 16px)" });
+
       ScrollTrigger.batch(".service-card", {
         onEnter: (elements) => {
-          gsap.from(elements, {
-            opacity: 0,
-            y: 50,
-            stagger: 0.1,
-            duration: 0.7,
+          gsap.to(elements, {
+            opacity: 1,
+            clipPath: "inset(0 0% 0 0 round 16px)",
+            stagger: 0.12,
+            duration: 0.9,
             ease: "power3.out",
           });
         },
-        start: "top 85%",
+        start: "top 82%",
+        once: true,
       });
+
+      // Subtle scale pulse on highlighted card
+      const highlighted = containerRef.current?.querySelector(".service-card-highlight");
+      if (highlighted) {
+        gsap.to(highlighted, {
+          boxShadow: "0 0 40px 8px rgba(212,98,27,0.25)",
+          repeat: -1,
+          yoyo: true,
+          duration: 2.5,
+          ease: "sine.inOut",
+        });
+      }
     },
     { scope: containerRef }
   );
@@ -55,9 +71,9 @@ export function ServicesSection() {
           {SERVICES.map((service) => (
             <article
               key={service.id}
-              className={`service-card group relative rounded-2xl p-6 lg:p-8 border transition-all duration-300 hover:-translate-y-1 ${
+              className={`service-card group relative rounded-2xl p-6 lg:p-8 border transition-all duration-300 hover:-translate-y-1.5 ${
                 service.highlight
-                  ? "bg-mc-orange border-mc-orange text-white"
+                  ? "service-card-highlight bg-mc-orange border-mc-orange text-white"
                   : "bg-[#1E1C2A] border-white/15 hover:border-mc-orange/50 hover:bg-[#221F30]"
               }`}
             >
@@ -69,12 +85,11 @@ export function ServicesSection() {
                 </div>
               )}
 
+              {/* Top accent line */}
+              <div className={`absolute top-0 left-6 right-6 h-px ${service.highlight ? "bg-white/30" : "bg-mc-orange/0 group-hover:bg-mc-orange/40"} transition-all duration-500`} />
+
               <div className="mb-4">
-                <h3
-                  className={`font-display text-2xl font-semibold mb-2 ${
-                    service.highlight ? "text-white" : "text-white"
-                  }`}
-                >
+                <h3 className="font-display text-2xl font-semibold mb-2 text-white">
                   {service.title}
                 </h3>
                 {service.price && (

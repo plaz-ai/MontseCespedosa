@@ -20,21 +20,37 @@ export function AboutSection() {
 
   useGSAP(
     () => {
-      gsap.from(".about-image", {
-        opacity: 0,
-        x: -60,
-        duration: 1,
-        ease: "power3.out",
+      // Image — clip-path reveal from left
+      gsap.set(".about-image", { clipPath: "inset(0 100% 0 0 round 16px)", opacity: 0 });
+      gsap.to(".about-image", {
+        clipPath: "inset(0 0% 0 0 round 16px)",
+        opacity: 1,
+        duration: 1.1,
+        ease: "power3.inOut",
         scrollTrigger: { trigger: ".about-image", start: "top 80%" },
       });
-      gsap.from(".about-content > *", {
+
+      // Decorative border element — delayed reveal
+      gsap.from(".about-deco-border", {
         opacity: 0,
-        x: 40,
-        stagger: 0.15,
-        duration: 0.7,
+        scale: 0.9,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".about-image", start: "top 80%" },
+        delay: 0.5,
+      });
+
+      // Content — stagger clip from bottom
+      gsap.set(".about-content > *", { clipPath: "inset(0 0 100% 0)", opacity: 0 });
+      gsap.to(".about-content > *", {
+        clipPath: "inset(0 0 0% 0)",
+        opacity: 1,
+        stagger: 0.1,
+        duration: 0.75,
         ease: "power3.out",
         scrollTrigger: { trigger: ".about-content", start: "top 80%" },
       });
+
     },
     { scope: containerRef }
   );
@@ -50,8 +66,7 @@ export function AboutSection() {
               aspectRatio="aspect-[4/5]"
               className="max-w-sm mx-auto lg:max-w-none"
             />
-            {/* Decorative element */}
-            <div className="absolute -bottom-4 -right-4 w-3/4 h-3/4 rounded-2xl border-2 border-mc-orange/20 -z-10" />
+            <div className="about-deco-border absolute -bottom-4 -right-4 w-3/4 h-3/4 rounded-2xl border-2 border-mc-orange/20 -z-10" />
             <div className="absolute -top-4 -left-4 w-24 h-24 rounded-full bg-mc-orange/5 -z-10" />
           </div>
 
@@ -78,11 +93,11 @@ export function AboutSection() {
             </p>
 
             {/* Credentials */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+            <div className="about-creds grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               {CREDENTIALS.map((cred) => (
                 <div
                   key={cred.label}
-                  className="flex items-start gap-3 p-3 rounded-xl bg-mc-cream border border-mc-gray-200"
+                  className="about-cred flex items-start gap-3 p-3 rounded-xl bg-mc-cream border border-mc-gray-200 hover:border-mc-orange/30 hover:bg-mc-orange/[0.03] transition-all duration-200"
                 >
                   <div className="w-1.5 h-1.5 rounded-full bg-mc-orange mt-2 flex-shrink-0" />
                   <div>

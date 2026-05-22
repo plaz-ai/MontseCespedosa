@@ -45,22 +45,36 @@ export function WhyUsSection() {
         y: 40,
         duration: 0.8,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".why-header",
-          start: "top 85%",
-        },
+        scrollTrigger: { trigger: ".why-header", start: "top 85%" },
       });
 
-      gsap.from(".why-card", {
-        opacity: 0,
-        y: 50,
-        stagger: 0.15,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".why-card",
-          start: "top 85%",
+      // Clip-path reveal — bottom to top wipe
+      gsap.set(".why-card", { opacity: 0, clipPath: "inset(0 0 100% 0 round 16px)" });
+
+      ScrollTrigger.batch(".why-card", {
+        onEnter: (elements) => {
+          gsap.to(elements, {
+            opacity: 1,
+            clipPath: "inset(0 0 0% 0 round 16px)",
+            stagger: 0.13,
+            duration: 0.85,
+            ease: "power3.out",
+          });
         },
+        start: "top 82%",
+        once: true,
+      });
+
+      // Icon float on hover
+      gsap.utils.toArray<HTMLElement>(".why-card").forEach((card) => {
+        const icon = card.querySelector(".why-icon");
+        if (!icon) return;
+        card.addEventListener("mouseenter", () => {
+          gsap.to(icon, { y: -5, duration: 0.25, ease: "power2.out" });
+        });
+        card.addEventListener("mouseleave", () => {
+          gsap.to(icon, { y: 0, duration: 0.55, ease: "elastic.out(1, 0.4)" });
+        });
       });
     },
     { scope: containerRef }
@@ -82,9 +96,9 @@ export function WhyUsSection() {
           {WHY_US_ITEMS.map((item) => (
             <div
               key={item.id}
-              className="why-card group bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-mc-gray-200"
+              className="why-card group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-mc-gray-200 cursor-default"
             >
-              <div className="w-12 h-12 rounded-xl bg-mc-orange/10 flex items-center justify-center text-mc-orange mb-4 group-hover:bg-mc-orange group-hover:text-white transition-all duration-300">
+              <div className="why-icon w-12 h-12 rounded-xl bg-mc-orange/10 flex items-center justify-center text-mc-orange mb-4 group-hover:bg-mc-orange group-hover:text-white transition-all duration-300">
                 {ICONS[item.icon]}
               </div>
               <h3 className="font-display text-xl font-semibold text-mc-text mb-2">
