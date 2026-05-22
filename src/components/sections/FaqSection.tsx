@@ -1,18 +1,48 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FAQ_ITEMS } from "@/lib/content";
 
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 export function FaqSection() {
+  const containerRef = useRef<HTMLElement>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
 
+  useGSAP(() => {
+    gsap.from(".faq-header", {
+      opacity: 0,
+      y: 36,
+      duration: 0.8,
+      ease: "power3.out",
+      scrollTrigger: { trigger: ".faq-header", start: "top 85%", once: true },
+    });
+
+    gsap.set(".faq-item", { opacity: 0, y: 28 });
+    ScrollTrigger.batch(".faq-item", {
+      onEnter: (elements) => {
+        gsap.to(elements, {
+          opacity: 1,
+          y: 0,
+          stagger: 0.08,
+          duration: 0.65,
+          ease: "power3.out",
+        });
+      },
+      start: "top 88%",
+      once: true,
+    });
+  }, { scope: containerRef });
+
   return (
-    <section className="section-padding bg-mc-cream" id="faq">
+    <section ref={containerRef} className="section-padding bg-mc-cream" id="faq">
       <div className="container-wide">
-        <div className="mb-12">
+        <div className="faq-header mb-12">
           <SectionHeader
             eyebrow="Preguntas frecuentes"
             title="Todo lo que"
@@ -25,7 +55,7 @@ export function FaqSection() {
           {FAQ_ITEMS.map((item, i) => (
             <div
               key={i}
-              className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+              className={`faq-item rounded-2xl border transition-all duration-300 overflow-hidden ${
                 openIndex === i
                   ? "border-mc-orange bg-white shadow-md"
                   : "border-mc-gray-200 bg-white"

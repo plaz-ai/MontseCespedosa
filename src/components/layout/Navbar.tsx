@@ -8,9 +8,15 @@ import { ModalTriggerButton } from "@/components/ui/ModalTriggerButton";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? y / max : 0);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -34,10 +40,10 @@ export function Navbar() {
             <span className="text-white font-display font-bold text-sm">M</span>
           </div>
           <div className="flex flex-col leading-none">
-            <span className="font-display text-white font-semibold text-lg tracking-tight">
+            <span className={`font-display font-semibold text-lg tracking-tight transition-colors duration-500 ${scrolled ? "text-white" : "text-mc-text"}`}>
               Montse Cespedosa
             </span>
-            <span className="text-mc-gray-400 text-[10px] font-body tracking-widest uppercase">
+            <span className={`text-[10px] font-body tracking-widest uppercase transition-colors duration-500 ${scrolled ? "text-mc-gray-400" : "text-mc-text/40"}`}>
               MC Group
             </span>
           </div>
@@ -84,6 +90,10 @@ export function Navbar() {
           </div>
         </button>
       </div>
+
+      {/* Scroll progress bar */}
+      <div className="absolute bottom-0 left-0 h-[2px] bg-mc-orange/80 transition-none pointer-events-none"
+        style={{ width: `${progress * 100}%` }} />
 
       {/* Mobile menu */}
       <div
