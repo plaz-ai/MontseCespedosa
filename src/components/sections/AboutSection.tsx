@@ -56,7 +56,7 @@ export function AboutSection() {
   );
 
   return (
-    <section ref={containerRef} className="section-padding bg-white" id="sobre-montse">
+    <section ref={containerRef} className="section-padding bg-mc-cream" id="sobre-montse">
       <div className="container-wide">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Image */}

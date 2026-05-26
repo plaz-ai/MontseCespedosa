@@ -10,17 +10,17 @@ const config: Config = {
     extend: {
       colors: {
         mc: {
-          orange: "#D4621B",
-          "orange-light": "#E87840",
-          "orange-dark": "#B8501A",
-          dark: "#0E0D14",
-          "dark-card": "#16151F",
-          cream: "#FAF7F2",
-          "gray-100": "#F2F0EB",
-          "gray-200": "#E4E1DA",
+          orange: "#C9A535",
+          "orange-light": "#F5E293",
+          "orange-dark": "#9A7E1A",
+          dark: "#0A132A",
+          "dark-card": "#132351",
+          cream: "#FFFFFF",
+          "gray-100": "#F4F4F2",
+          "gray-200": "#E6E4DF",
           "gray-400": "#9B9794",
-          text: "#1A1826",
-          "text-muted": "#6B6867",
+          text: "#0A132A",
+          "text-muted": "#5C6780",
         },
       },
       fontFamily: {

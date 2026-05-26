@@ -74,7 +74,7 @@ export function ServicesSection() {
               className={`service-card group relative rounded-2xl p-6 lg:p-8 border transition-all duration-300 hover:-translate-y-1.5 ${
                 service.highlight
                   ? "service-card-highlight bg-mc-orange border-mc-orange text-white"
-                  : "bg-[#1E1C2A] border-white/15 hover:border-mc-orange/50 hover:bg-[#221F30]"
+                  : "bg-[#152040] border-white/15 hover:border-mc-orange/50 hover:bg-[#1A2850]"
               }`}
             >
               {service.highlight && (

@@ -95,7 +95,7 @@ export function MediaBar() {
   }, []);
 
   return (
-    <section className="bg-white border-y border-mc-gray-200 py-6 overflow-hidden">
+    <section className="bg-mc-cream border-y border-mc-gray-200 py-6 overflow-hidden">
       <div className="container-wide flex items-center gap-4 mb-5">
         <span className="text-[10px] font-body font-semibold text-mc-gray-400 tracking-widest uppercase whitespace-nowrap">
           Montse en los medios

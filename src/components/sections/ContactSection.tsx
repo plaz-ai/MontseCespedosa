@@ -70,7 +70,7 @@ export function ContactSection() {
   };
 
   return (
-    <section ref={containerRef} className="section-padding bg-white" id="contacto">
+    <section ref={containerRef} className="section-padding bg-mc-cream" id="contacto">
       <div className="container-wide">
 
         {/* Editorial header */}
