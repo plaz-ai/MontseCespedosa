@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --mc-orange: #c9a535;
-  --mc-orange-light: #f5e293;
-  --mc-orange-dark: #9a7e1a;
+  --mc-orange: #d0bd6a;
+  --mc-orange-light: #ddd18a;
+  --mc-orange-dark: #a8964a;
   --mc-dark: #0a132a;
   --mc-dark-card: #132351;
   --mc-cream: #ffffff;

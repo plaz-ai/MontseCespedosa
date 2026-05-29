@@ -10,9 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         mc: {
-          orange: "#C9A535",
-          "orange-light": "#F5E293",
-          "orange-dark": "#9A7E1A",
+          orange: "#D0BD6A",
+          "orange-light": "#DDD18A",
+          "orange-dark": "#A8964A",
           dark: "#0A132A",
           "dark-card": "#132351",
           cream: "#FFFFFF",

@@ -96,17 +96,17 @@ export function HeroSection() {
         <h1 className="leading-none select-none w-full">
           {/* Ghost row */}
           <span className="hero-row-1 block font-body font-black uppercase tracking-[-0.025em] leading-[0.92]"
-            style={{ fontSize: "clamp(2.5rem, 7vw, 7.5rem)", color: "rgba(255,255,255,0.50)" }}>
+            style={{ fontSize: "clamp(2rem, 5.6vw, 6rem)", color: "rgba(255,255,255,0.50)" }}>
             <WordReveal text="Expertos" />
           </span>
           {/* Elegant serif anchor */}
           <span className="hero-row-2 block font-display italic leading-[0.85] text-white"
-            style={{ fontSize: "clamp(4rem, 14vw, 15rem)" }}>
+            style={{ fontSize: "clamp(3.2rem, 11.2vw, 12rem)" }}>
             <WordReveal text="en" />
           </span>
           {/* Gold dominant — brand accent on dark, perfect contrast */}
           <span className="hero-row-3 block font-body font-black uppercase tracking-[-0.03em] leading-[0.92] text-mc-orange-light"
-            style={{ fontSize: "clamp(2.2rem, 6.5vw, 7rem)" }}>
+            style={{ fontSize: "clamp(1.8rem, 5.2vw, 5.6rem)" }}>
             <WordReveal text="hipotecas" />
           </span>
         </h1>
